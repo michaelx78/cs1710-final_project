@@ -1,25 +1,35 @@
 #lang forge
 
-sig Node {
-    edges : set Edge
+sig GraphNode {
+    neighbors : set GraphNode
 }
 
-sig Edge {
-    weight : one Int,
-    start: one Node,
-    end: one Node,
-    // rank used as tiebreaker when finding lowest weight edge (a unique integer)
-    rank: one Int
-}
+// sig Edge {
+//     weight : one Int,
+//     start: one Node,
+//     end: one Node,
+//     // rank used as tiebreaker when finding lowest weight edge (a unique integer)
+//     rank: one Int
+// }
 
 sig Graph {
     nodes : set Node,
-    edges : set Edge
+    rank : pfunc GraphNode -> GraphNode -> Int
+    //edges : set Edge
 }
 
-sig SpanningTree {
-    nodes : set Node,
-    edges : set Edge
+// sigs for modeling disjoint-set data structure
+sig TreeNode {
+    parent: lone TreeNode // if no parent, node is root
+}
+
+sig Forest {
+    trees : set TreeNode
+}
+
+pred init {
+    // start with disconnected forest
+    all node: TreeNode | parent = none
 }
 
 pred isRankUnique[graph: Graph] {
