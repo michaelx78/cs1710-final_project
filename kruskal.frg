@@ -22,6 +22,20 @@ one sig Graph {
 //     mst_edges: set Edge
 // }
 
+// // sigs for modeling disjoint-set data structure
+// sig TreeNode {
+//     parent: lone TreeNode // if no parent, node is root
+// }
+
+// sig Forest {
+//     trees : set TreeNode
+// }
+
+// pred init {
+//     // start with disconnected forest
+//     all node: TreeNode | parent = none
+// }
+
 // pred isRankUnique[graph: Graph] {
 //     all disj e1, e2: graph.edges | e1.rank != e2.rank
 // }
