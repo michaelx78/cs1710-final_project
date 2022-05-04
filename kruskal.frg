@@ -1,83 +1,49 @@
 #lang forge
 
-sig Vertex {
-    neighbors: set Edge
-}
-
-sig Edge {
-    endpoint_one: one Vertex,
-    endpoint_two: one Vertex,
-    // relation: set Vertex -> Vertex,
-    weight: one Int
-    // next: lone Edge
-}
-
-one sig Graph {
-    vertices: set Vertex,
-    edges: set Edge
-}
-
-// sig SpanningTree {
-//     mst_vertices: set Vertex,
-//     mst_edges: set Edge
-// }
-
-// // sigs for modeling disjoint-set data structure
-// sig TreeNode {
-//     parent: lone TreeNode // if no parent, node is root
-// }
-
-// sig Forest {
-//     trees : set TreeNode
-// }
-
-// pred init {
-//     // start with disconnected forest
-//     all node: TreeNode | parent = none
-// }
-
-// pred isRankUnique[graph: Graph] {
-//     all disj e1, e2: graph.edges | e1.rank != e2.rank
-// }
-
-// fun findLowestWeightEdge[graph: Graph] : Edge {
-//     {e1: graph.edges | no e2: graph.edges | e1 != e2 and e1.weight > e2.weight}
-// }
-
-// fun findCompetingLowestWeightEdge[graph: Graph] : Edge {
-//     not one findLowestWeightEdge 
-//     implies {e1: graph.edges | no e2: graph.edges | e1 != e2 and e1.weight > e2.weight and e1.rank < e2.rank} 
-//     else findLowestWeightEdge
-// }
-
-// pred includesEveryVertex[graph: Graph, mst: SpanningTree] {
-//     all v: graph.nodes | some e: mst.edges | v = e.vertexOne or v = e.vertexTwo
-// }
-
-pred allVerticesInGraph {
-    all v: Vertex | v in Graph.vertices
-}
-
-pred allEdgesInGraph {
-    all e: Edge | e in Graph.edges
+sig Node {
+    edge: set Node -> Int
 }
 
 pred noSelfLoops {
-    all e: Graph.edges | e.endpoint_one != e.endpoint_two
+    no (iden & edge.Int)
 }
 
-// pred isConnectedGraph[graph: Graph] {
-//     all e: graph.edges | e.vertexOne in graph.nodes and e.vertexTwo in graph.nodes
-//     all disj v1, v2: graph.nodes | v1 in v2.^(edges)
-// }
+pred atMostOneEdgeBetweenNodes {
+    all n1, n2: Node | lone edge[n1][n2]
+}
 
-// pred isAcyclicGraph[graph: Graph] {
-//     all e: graph.edges | e.vertexOne in graph.nodes and e.vertexTwo in graph.nodes
-//     all v: graph.nodes | v not in v.^(edges)
-// }
+pred positiveEdgeWeights {
+    all n1, n2: Node | {
+        some edge[n1][n2] implies 
+        edge[n1][n2] > 0
+    }
+}
+
+pred uniqueEdgeWeights {
+    all n1, n2, n3, n4: Node | {
+        (some edge[n1][n2] and some edge[n3][n4] and edge[n1][n2] = edge[n3][n4]) implies
+        ((n1 = n3 and n2 = n4) or (n1 = n4 and n2 = n3))
+    }
+}
+
+pred connectedGraph {
+    all disj n1, n2: Node | n1 in n2.^(edge.Int)
+}
+
+pred undirectedGraph {
+    all n1, n2: Node | edge[n1][n2] = edge[n2][n1]
+}
+
+pred wellFormed {
+    noSelfLoops
+    atMostOneEdgeBetweenNodes
+    positiveEdgeWeights
+    uniqueEdgeWeights // for simplicity for now
+    connectedGraph
+    undirectedGraph
+}
 
 run {
-    allVerticesInGraph
-    allEdgesInGraph
-    noSelfLoops
-} for exactly 3 Vertex, exactly 3 Edge
+    wellFormed
+} for exactly 5 Node
+ 
