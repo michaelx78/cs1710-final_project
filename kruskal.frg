@@ -145,7 +145,34 @@ pred fullTrace {
     }
 }
 
+pred doesTreeSpan {
+    fullTrace implies {
+        some st : KruskalsAlgorithmState | {
+            all disj n1, n2: Node | {
+                n1 not in n2.^(st.used)
+            }
+        }
+    }
+}
+
+pred noLowerWeightMST {
+    // no disj s1, s2 :  KruskalsAlgorithmState | {
+    //     finalState[s1] and finalState[s2]
+    // }
+    some finalSt: KruskalsAlgorithmState | {
+        finalState[finalSt]
+        no otherSt: KruskalsAlgorithmState | {
+            finalState[otherSt] and otherSt.total < finalSt.total
+        }
+    } 
+}
+
 run {
     wellFormed
     fullTrace
 } for exactly 4 Node, 5 Int for {next is linear} // does not work for exactly 5+ Node? (unsure if because of code or limitations of Forge)
+
+test expect {
+    reachAllNodesTest: {doesTreeSpan} for exactly 4 Node, 5 Int is theorem
+    noOtherMSTTest: {noLowerWeightMST} for exactly 4 Node, 5 Int is sat
+}
