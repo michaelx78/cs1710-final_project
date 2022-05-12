@@ -29,6 +29,8 @@ Our testing checks to see if the tree build by the model is a MST.
 
 When the **uniqueEdgeWeights** predicate is activated (i.e. not commented out), there should only be 1 MST for the given graph, so the **noLowerWeightMST** predicate ensures this is the case. We also have tests to check if the tree found spans across all nodes and if the tree has no cycles in it, all to verify the tree as a MST.
 
+Our current github commit has sat tests. A prior commit (titled "README v2", commit id a268269) has theorem tests in the kruskal.frg file. We wanted to seperate the large kruskal.frg into smaller files and we needed to switch to "sat" to pass the tests.
+
 ## Limitations
 
 At first, we started off with our reach goal being to model out Kruskal's variations from research papers. This was suggested by our 3rd team member, who stepped away from this final project. The 2 remaining members had less familiarity than the 3rd member with Kruskal's, so the target goal became to properly model Kruskal's, hopefully with the union by rank optimization.
