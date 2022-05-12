@@ -22,7 +22,7 @@ To stay true to Kruskal's algorithm, we decided to implement union by rank. We d
 
 Union by rank is based upon the disjoint set data structure, which is the core of Kruskal's. Essentially, if we wish to join two sub-treesto create a larger tree, the sub-tree with less nodes should merge into the larger sub-tree for higher efficiency. This method and path compression are implemented into our model to represented an optimized model of Kruskal's
 
-[This article] (https://medium.com/@harshits337/disjoint-set-unions-by-rank-and-path-compression-3a7b3946f550) provides more insight into union by rank and path compression.
+[This article](https://medium.com/@harshits337/disjoint-set-unions-by-rank-and-path-compression-3a7b3946f550) provides more insight into union by rank and path compression.
 
 ## Testing
 Our testing checks to see if the tree build by the model is a MST. 
@@ -41,12 +41,12 @@ Yeah, we have bugs :(
 
 Our model does not work with 5 or more nodes; it results in a "unsat". 'Tis a shame. 
 
-We mainly think it has to do with an int overflow error from adding and finding the total of a tree's weights. We put several constraints to ensure int overflow never occurs, like ensuring the total of a tree's weights never reaches max[Int]. Alas, the "unsat" persists.
+We were advised by Tim and Megan that our error may have to do with an int overflow error from adding and finding the total of a tree's weights. We put several constraints to ensure int overflow never occurs, like ensuring the total of a tree's weights never reaches max[Int]. Alas, the "unsat" persists.
 
-Our model does work for 4 or fewer nodes. This stifled our debugging because we were unsure why the model worked fine for 4 or fewer nodes, but broke after adding a 5th node.
+Our model does work for 4 or fewer nodes. This stifled our debugging because we were unsure why the model worked fine for 4 or fewer nodes, but broke after adding a 5th node. We are unsure what causes the "unsat".
 
 ## Acknowledgements
 
 Thanks to Tim and Megan for their guidance during this project!
-Our model is inspired by the [Prim's algorithm model] (https://hackmd.io/@lfs/rk27CaIN9) Tim has shared in Lecture 31.
+Our model is inspired by the [Prim's algorithm model](https://hackmd.io/@lfs/rk27CaIN9) Tim has shared in Lecture 31.
 
